@@ -1,0 +1,37 @@
+{
+  "projectName": "motion-doge-screensaver",
+  "prompt": "Create a DVD-Rom Style animation of this image https://i.pinimg.com/600x/ac/82/57/ac8257e1cfc4e63f5c63f3d4869eb7c4.jpg\nThe graphic moves smoothly across the screen in a straight line, bouncing off the edges of the screen whenever it hits a border. Each time it hits a corner or side, it changes direction, creating a continuous floating, ricocheting motion. The speed is steady, the movement is linear, and the object keeps rotating around the screen endlessly, just like the classic DVD logo screensaver.\n\nChange the color on every bounce, no rotation, Make the animation speed fast.",
+  "summary": "Generated your animation, any follow up edits?",
+  "timestamp": 1771085420455,
+  "skills": [
+    "transitions",
+    "sequencing"
+  ],
+  "conversationMessages": [
+    {
+      "id": "user-1771085400048",
+      "role": "user",
+      "content": "Create a DVD-Rom Style animation of this image https://i.pinimg.com/600x/ac/82/57/ac8257e1cfc4e63f5c63f3d4869eb7c4.jpg\nThe graphic moves smoothly across the screen in a straight line, bouncing off the edges of the screen whenever it hits a border. Each time it hits a corner or side, it changes direction, creating a continuous floating, ricocheting motion. The speed is steady, the movement is linear, and the object keeps rotating around the screen endlessly, just like the classic DVD logo screensaver.\n\nChange the color on every bounce, no rotation, Make the animation speed fast.",
+      "timestamp": 1771085400048
+    },
+    {
+      "id": "assistant-1771085420455",
+      "role": "assistant",
+      "content": "Generated your animation, any follow up edits?",
+      "timestamp": 1771085420455,
+      "codeSnapshot": "import { AbsoluteFill, Img, useCurrentFrame, useVideoConfig } from \"remotion\";\n\nexport const MyAnimation = () => {\n\t/*\n\t\tDVD-ROM style screensaver: the provided image moves in a straight line at a steady speed,\n\t\tbouncing off the edges forever. On every wall hit (including corners), the graphic changes\n\t\tcolor via a hue shift, while keeping linear motion and no rotation.\n\t*/\n\n\tconst frame = useCurrentFrame();\n\tconst { width, height, fps } = useVideoConfig();\n\n\t// COLORS\n\tconst COLOR_BACKGROUND = \"#0B0D12\";\n\n\t// TEXT\n\tconst IMAGE_SRC =\n\t\t\"https://i.pinimg.com/600x/ac/82/57/ac8257e1cfc4e63f5c63f3d4869eb7c4.jpg\";\n\n\t// TIMING\n\tconst HUE_STEP_DEG = 42;\n\n\t// LAYOUT\n\tconst PADDING = Math.max(24, Math.round(width * 0.04));\n\tconst LOGO_WIDTH = Math.max(180, Math.round(width * 0.24));\n\tconst LOGO_HEIGHT = Math.max(110, Math.round(height * 0.18));\n\tconst START_X = Math.max(0, Math.round((width - LOGO_WIDTH) * 0.18));\n\tconst START_Y = Math.max(0, Math.round((height - LOGO_HEIGHT) * 0.22));\n\n\t// Calculations and derived values\n\tconst t = frame / fps;\n\n\tconst minX = PADDING;\n\tconst minY = PADDING;\n\tconst maxX = width - PADDING - LOGO_WIDTH;\n\tconst maxY = height - PADDING - LOGO_HEIGHT;\n\n\tconst travelX = Math.max(1, maxX - minX);\n\tconst travelY = Math.max(1, maxY - minY);\n\n\t// Fast, steady, linear speed (px/s), scaled to comp size\n\tconst SPEED_X = Math.max(480, Math.round(width * 0.9));\n\tconst SPEED_Y = Math.max(420, Math.round(height * 0.85));\n\n\tconst reflect01 = (u: number) => {\n\t\t// u in [0..inf) -> reflected sawtooth in [0..1]\n\t\tconst m = u % 2;\n\t\treturn m <= 1 ? m : 2 - m;\n\t};\n\n\tconst cyclesX = (START_X - minX + SPEED_X * t) / travelX;\n\tconst cyclesY = (START_Y - minY + SPEED_Y * t) / travelY;\n\n\tconst x = minX + reflect01(cyclesX) * travelX;\n\tconst y = minY + reflect01(cyclesY) * travelY;\n\n\t// Bounce count: each time we cross a wall on either axis\n\tconst bounceCountX = Math.max(0, Math.floor(cyclesX));\n\tconst bounceCountY = Math.max(0, Math.floor(cyclesY));\n\tconst bounceCount = bounceCountX + bounceCountY;\n\n\tconst hue = (bounceCount * HUE_STEP_DEG) % 360;\n\n\treturn (\n\t\t<AbsoluteFill\n\t\t\tstyle={{\n\t\t\t\tbackgroundColor: COLOR_BACKGROUND,\n\t\t\t\tfontFamily: \"Inter, sans-serif\",\n\t\t\t}}\n\t\t>\n\t\t\t<Img\n\t\t\t\tsrc={IMAGE_SRC}\n\t\t\t\tstyle={{\n\t\t\t\t\tposition: \"absolute\",\n\t\t\t\t\tleft: 0,\n\t\t\t\t\ttop: 0,\n\t\t\t\t\twidth: LOGO_WIDTH,\n\t\t\t\t\theight: LOGO_HEIGHT,\n\t\t\t\t\tobjectFit: \"contain\",\n\t\t\t\t\ttransform: `translate3d(${x}px, ${y}px, 0)`,\n\t\t\t\t\tfilter: `hue-rotate(${hue}deg) saturate(1.35) brightness(1.08)`,\n\t\t\t\t\twillChange: \"transform, filter\",\n\t\t\t\t}}\n\t\t\t/>\n\t\t</AbsoluteFill>\n\t);\n};",
+      "metadata": {
+        "projectName": "motion-doge-screensaver",
+        "projectRepositoryId": "https://github.com/dumitruPuggle/motion-doge-screensaver.git",
+        "skills": [
+          "transitions",
+          "sequencing"
+        ]
+      }
+    }
+  ],
+  "snapshotId": "1771085420455-51049959",
+  "commitName": "generation: Generated your animation, any follow up edits?",
+  "assetPaths": [],
+  "savedAtIso": "2026-02-14T16:10:21.052Z"
+}
